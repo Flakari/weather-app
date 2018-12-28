@@ -7,8 +7,14 @@
     <title>Weather App</title>
 </head>
 <body>
-    <button id="fahr">Fahrenheit</button>
-    <button id="cel">Celsius</button>
+    <form onsubmit="return false">
+        <input type="text" name="city" id="weather-city">
+        <button id="submit">Submit</button>
+        <button id="fahr">Fahrenheit</button>
+        <button id="cel">Celsius</button>
+    </form>
+    <p id="error"></p>
+    
     <script src="scripts/script.js"></script>
 </body>
 </html>

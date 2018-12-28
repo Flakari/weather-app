@@ -1,27 +1,54 @@
 const fahrButton = document.querySelector('#fahr');
 const celButton = document.querySelector('#cel');
+const submitButton = document.querySelector('#submit');
 
-document.onload = getWeather('imperial');
+const measurementUnits = (() => {
+    let units = 'imperial';
+
+    function getUnits() {
+        return units;
+    }
+
+    function changeUnits(unitType) {
+        units = unitType;
+    }
+
+    return { getUnits, changeUnits };
+})();
 
 function getWeather(units) {
-    const location = encodeURI('San Francisco');
-    const URL = `http://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
-    
-    const key = getKey();
+    const city = document.querySelector('#weather-city').value;
+    const error = document.querySelector('#error');
 
-    fetch(`${ URL }${ key }`, { mode: 'cors' })
+    const location = encodeURI(city);
+    const URL = `http://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
+
+    fetch(`${ URL }${ getKey() }`, { mode: 'cors' })
         .then((response) => {
             return response.json();
         })
         .then((response) => {
             console.log(response);
-            return response;
+            return response;   
         })
         .then((response) => {
-            console.log(getTempString(response, units));
-            console.log(getWeatherString(response));
-            console.log(getWindString(response, units));
+            if (response.cod != 200) {
+                console.clear();
+                error.textContent = capitalize(response.message);
+            } else {
+                error.textContent = '';
+                console.log(getTempString(response, units));
+                console.log(getWeatherString(response));
+                console.log(getWindString(response, units));
+            }
+        })
+        .catch((error) => {
+            console.log(error);
         });
+
+    function getKey() {
+        return window.atob('MTExODcxNTRkYTcyZTNlNGY1MDUzOWEzNWRkYzgxNDQ=');
+    }
 }
 
 function getTempString(response, units) {
@@ -91,14 +118,18 @@ function getWindDirection(deg) {
     }
 }
 
-function getKey() {
-    return window.atob('MTExODcxNTRkYTcyZTNlNGY1MDUzOWEzNWRkYzgxNDQ=');
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-fahrButton.addEventListener('click', e =>{
-    getWeather('imperial');
+submitButton.addEventListener('click', () => {
+    getWeather(measurementUnits.getUnits());
 });
 
-celButton.addEventListener('click', e => {
-    getWeather('metric');
+fahrButton.addEventListener('click', () =>{
+    measurementUnits.changeUnits('imperial');
+});
+
+celButton.addEventListener('click', () => {
+    measurementUnits.changeUnits('metric');
 });
