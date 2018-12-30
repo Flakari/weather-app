@@ -1,11 +1,29 @@
+body {
+    background-color: #9797ff;
+}
+
 h1 {
     text-align: center;
+    font-variant: small-caps;
 }
 
 #container {
-    width: 800px;
-    max-width: 90%;
+    width: 1200px;
+    max-width: 95%;
     margin: 0 auto;
+    background-color: #ffffff9c;
+}
+
+#weather-form {
+    margin: 0 auto;
+}
+
+#weather-input {
+    box-sizing: border-box;
+    padding: 2px 10px;
+    height: 35px;
+    width: 400px;
+    max-width: 80%;
 }
 
 #fahr {
@@ -16,6 +34,11 @@ h1 {
 #cel {
     height: 35px;
     width: 35px;
+}
+
+#submit {
+    height: 35px;
+    width: 80px;
 }
 
 #error-container {

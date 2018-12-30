@@ -13,8 +13,8 @@
             <h1>Weather!</h1>
         </header>
         <div>
-            <form onsubmit="return false">
-                <input type="text" name="city" id="weather-city">
+            <form onsubmit="return false" id="weather-form">
+                <input type="text" name="city" id="weather-input">
                 <button id="submit">Submit</button>
                 <button id="fahr">F&deg;</button>
                 <button id="cel">C&deg;</button>
@@ -26,6 +26,11 @@
                 <p>Search by zipcode or city name, zipcode is not reliable. If the wrong city appears, search using city or zipcode and country code. Ex: San Francisco, US. Country codes can be found here: <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements" target="_blank">Link</a></p>
             </div>
         </div>
+        <article id="weather-report">
+            <div id="temp"></div>
+            <div id="weather"></div>
+            <div id="wind"></div>
+        </article>
     </div>
     <script src="scripts/script.js"></script>
 </body>

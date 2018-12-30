@@ -17,9 +17,8 @@ const measurementUnits = (() => {
 })();
 
 function getWeather(units) {
-    const city = document.querySelector('#weather-city').value;
-    const error = document.querySelector('#error');
-
+    const city = document.querySelector('#weather-input').value;
+    
     const location = encodeURI(city);
     const URL = `http://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
 
@@ -27,19 +26,17 @@ function getWeather(units) {
         .then((response) => {
             return response.json();
         })
-        .then((response) => {
+        /*.then((response) => {
             console.log(response);
             return response;   
-        })
+        })*/
         .then((response) => {
             if (response.cod != 200) {
                 console.clear();
-                error.textContent = `Error: ${ capitalize(response.message) }`;
             } else {
-                error.textContent = '';
-                console.log(getTempString(response, units));
-                console.log(getWeatherString(response));
-                console.log(getWindString(response, units));
+                displayTemp(response, units);
+                displayWeather(response);
+                displayWind(response, units);
             }
             errorMessageDisplay(response);
         })
@@ -52,13 +49,28 @@ function getWeather(units) {
     }
 }
 
+function displayTemp(response, units) {
+    const tempDisplay = document.querySelector('#temp');
+    tempDisplay.innerText = getTempString(response, units);
+}
+
 function getTempString(response, units) {
     const tempSymbol = getUnitSymbol(units);
-    return 'Current temperature in ' + response.name + ': ' + response.main.temp + ' ' + tempSymbol;
+    return 'Current temperature in ' + response.name + ': ' + response.main.temp + '\xB0 ' + tempSymbol;
+}
+
+function displayWeather(response) {
+    const weatherDisplay = document.querySelector('#weather');
+    weatherDisplay.innerText = getWeatherString(response);
 }
 
 function getWeatherString(response) {
     return 'Current weather: ' + response.weather[0].main;
+}
+
+function displayWind(response, units) {
+    const windDisplay = document.querySelector('#wind');
+    windDisplay.innerText = getWindString(response, units);
 }
 
 function getWindString(response, units) {
@@ -125,11 +137,14 @@ function capitalize(string) {
 
 function errorMessageDisplay(response) {
     const errorCont = document.querySelector('#error-container');
+    const error = document.querySelector('#error');
 
     if (response.cod != 200) {
         errorCont.classList.add('error-unhidden');
+        error.textContent = `Error: ${ capitalize(response.message) }`;
     } else {
         errorCont.classList.remove('error-unhidden');
+        error.textContent = '';
     }
 }
 
@@ -144,3 +159,4 @@ fahrButton.addEventListener('click', () =>{
 celButton.addEventListener('click', () => {
     measurementUnits.changeUnits('metric');
 });
+
