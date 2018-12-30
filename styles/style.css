@@ -1,0 +1,55 @@
+h1 {
+    text-align: center;
+}
+
+#container {
+    width: 800px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+#fahr {
+    height: 35px;
+    width: 35px;
+}
+
+#cel {
+    height: 35px;
+    width: 35px;
+}
+
+#error-container {
+    height: 0px;
+    overflow: hidden;
+    background-color: #ff6767;
+    transition: height 0.4s ease-out;
+}
+
+#error-container.error-unhidden {
+    transition: height 0.4s ease-out;
+    height: 30px;
+
+}
+
+#error {
+    padding: 5px;
+    overflow: hidden;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 0.9em;
+    color: #520100;
+    text-align: center;
+}
+
+#search-info {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    background-color: #ffffb2;
+    padding: 10px;
+    color: #3a3700;
+}
+
+#search-info p {
+    margin: 0;
+    text-align: center;
+}

@@ -34,13 +34,14 @@ function getWeather(units) {
         .then((response) => {
             if (response.cod != 200) {
                 console.clear();
-                error.textContent = capitalize(response.message);
+                error.textContent = `Error: ${ capitalize(response.message) }`;
             } else {
                 error.textContent = '';
                 console.log(getTempString(response, units));
                 console.log(getWeatherString(response));
                 console.log(getWindString(response, units));
             }
+            errorMessageDisplay(response);
         })
         .catch((error) => {
             console.log(error);
@@ -120,6 +121,16 @@ function getWindDirection(deg) {
 
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function errorMessageDisplay(response) {
+    const errorCont = document.querySelector('#error-container');
+
+    if (response.cod != 200) {
+        errorCont.classList.add('error-unhidden');
+    } else {
+        errorCont.classList.remove('error-unhidden');
+    }
 }
 
 submitButton.addEventListener('click', () => {

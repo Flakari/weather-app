@@ -5,16 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weather App</title>
+    <link href="styles/style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <form onsubmit="return false">
-        <input type="text" name="city" id="weather-city">
-        <button id="submit">Submit</button>
-        <button id="fahr">Fahrenheit</button>
-        <button id="cel">Celsius</button>
-    </form>
-    <p id="error"></p>
-    
+    <div id="container">
+        <header>
+            <h1>Weather!</h1>
+        </header>
+        <div>
+            <form onsubmit="return false">
+                <input type="text" name="city" id="weather-city">
+                <button id="submit">Submit</button>
+                <button id="fahr">F&deg;</button>
+                <button id="cel">C&deg;</button>
+            </form>
+            <div id="error-container">
+                <div id="error"></div>
+            </div>
+            <div id="search-info">
+                <p>Search by zipcode or city name, zipcode is not reliable. If the wrong city appears, search using city or zipcode and country code. Ex: San Francisco, US. Country codes can be found here: <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements" target="_blank">Link</a></p>
+            </div>
+        </div>
+    </div>
     <script src="scripts/script.js"></script>
 </body>
 </html>
