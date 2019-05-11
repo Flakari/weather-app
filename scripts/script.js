@@ -26,10 +26,10 @@ function getWeather(units) {
         .then((response) => {
             return response.json();
         })
-        /*.then((response) => {
+        .then((response) => {
             console.log(response);
             return response;   
-        })*/
+        })
         .then((response) => {
             if (response.cod != 200) {
                 console.clear();

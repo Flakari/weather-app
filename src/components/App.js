@@ -1,10 +1,14 @@
 import React from 'react';
+import Header from './Header';
+import Weather from './Weather';
 
 function App() {
+
     return (
-        <div>
-            <h1>Hi</h1>
-        </div>
+        <main id="container">
+            <Header />
+            <Weather />
+        </main>
     )
 }
 
