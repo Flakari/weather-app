@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Form({ updateData, units }) {
+function Form({ updateData, units, updateUnits }) {
     const [ city, setCity ] = useState('');
 
     function changeHandler(event) {
@@ -13,6 +13,7 @@ function Form({ updateData, units }) {
 
         fetch(`${ URL }${ getKey() }`, { mode: 'cors' })
             .then((response) => {
+                console.log('Called api');
                 return response.json();
             })
             .then((response) => {
@@ -21,7 +22,7 @@ function Form({ updateData, units }) {
             .then((response) => {
                 if (response.cod != 200) {
                     updateData(response);
-                    console.clear();
+                    //console.clear();
                 } else {
                     updateData(response);
                 }
@@ -40,14 +41,17 @@ function Form({ updateData, units }) {
 
     return (
         <div>
-            <form onSubmit={ (e) => { e.preventDefault(); retrieveWeatherData(city, units); }}>
+            <form id="weather-form" onSubmit={ (e) => { e.preventDefault(); retrieveWeatherData(city, units); }}>
                 <input 
                     name="Location"
+                    id="weather-input"
                     value={ city }
                     onChange={ changeHandler }
                 />
-                <input type="submit" value="Submit" />
+                <input id="submit" type="submit" value="Submit" />
             </form>
+            <input id="fahr" name="imperial" type="button" value ="F&deg;" onClick={ updateUnits }/>
+            <input id="cel" name="metric" type="button" value ="C&deg;" onClick={ updateUnits } />
         </div>
     )
 }

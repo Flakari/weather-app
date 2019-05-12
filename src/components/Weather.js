@@ -10,22 +10,32 @@ function Weather() {
         setWeatherData(data);
     }
 
-    const weatherReport = () => {
+    function updateUnits(event) {
+        setUnits(event.target.name);
+    }
+
+    useEffect(() => {
+        console.log(units);
+    }, [units])
+
+    useEffect(() => {
         if (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) {
             console.log(weatherData);
-            return (
-                <Report weatherData={ weatherData } />
-            );
+            console.log('Success');
         } else {
             console.log(weatherData);
-            return null;
+            console.log('Error');
         }
-    };
+    }, [weatherData]);
 
     return (
         <div>
-            <Form updateData={ updateWeatherData } units={ units } />
-            { weatherReport() }
+            <Form 
+                updateData={ updateWeatherData } 
+                units={ units }
+                updateUnits={ updateUnits } 
+            />
+            { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } /> : null }
         </div>
     )
 }
