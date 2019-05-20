@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Form({ updateData, units, updateUnits }) {
+function Form({ updateData, updateForecast, units, updateUnits }) {
     const [ city, setCity ] = useState('');
 
     function changeHandler(event) {
@@ -10,34 +10,32 @@ function Form({ updateData, units, updateUnits }) {
     function retrieveWeatherData(input, units) {
         const location = encodeURI(input);
         const URL = `http://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
+        const fiveDayURL = `http://api.openweathermap.org/data/2.5/forecast?q=${ location }&units=${ units }&APPID=`;
 
-        fetch(`${ URL }${ getKey() }`, { mode: 'cors' })
-            .then((response) => {
-                console.log('Called api');
-                return response.json();
-            })
-            .then((response) => {
-                return response;   
-            })
-            .then((response) => {
-                if (response.cod != 200) {
-                    updateData(response);
-                    //console.clear();
-                } else {
-                    updateData(response);
-                }
-                return response;
-                //errorMessageDisplay(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        Promise.all([
+            fetch(`${ URL }${ getKey() }`, { mode: 'cors' }),
+            fetch(`${ fiveDayURL }${ getKey() }`, { mode: 'cors' })
+        ])
+        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+        .then(([res1, res2]) => {
+            console.log('Called apis');
+            if (res1.cod != 200) {
+                updateData(res1);
+                updateForecast(res2);
+                //console.clear();
+            } else {
+                updateData(res1);
+                updateForecast(res2)
+            }   
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
         function getKey() {
             return window.atob('MTExODcxNTRkYTcyZTNlNGY1MDUzOWEzNWRkYzgxNDQ=');
         }
     }
-    
 
     return (
         <div>

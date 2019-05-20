@@ -2,11 +2,26 @@ import React, { useState, useEffect } from 'react';
 
 function Report( { weatherData, units }) {
     const [ windUnits, setWindUnits ] = useState('');
+    const [ windSpeed, setWindSpeed ] = useState('');
+    const [ tempUnits, setTempUnits ] = useState('');
 
     useEffect(() => {
         setWindUnits(units == 'imperial' ? 'mph' : 'km/h');
+        setWindSpeed(units == 'imperial' ? weatherData.wind.speed : metricWindSpeed(weatherData.wind.speed));
+        setTempUnits(units == 'imperial' ? 'F' : 'C');
         console.log('units updated');
     }, [ weatherData ]);
+
+    function metricWindSpeed(speed) {
+        const M_TO_KM = 1 / 1000;
+        const SEC_TO_HR = 3600;
+
+        return (speed * M_TO_KM * SEC_TO_HR).toFixed(2);
+    }
+
+    function weatherIcon(weather) {
+        // Inserts icon based on weather conditions and possible time of day
+    }
 
     function getWindDirection(deg) {
         if (deg >= 348.75 || deg <= 11.25) {
@@ -47,9 +62,11 @@ function Report( { weatherData, units }) {
     return (
         <article>
             <p>Weather Report</p>
-            <p>{ weatherData.name }</p>
-            <p id="temp">{ weatherData.main.temp }</p>
-            <p id="wind">{ `${ weatherData.wind.speed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
+            <p>{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
+            <p id="temp">{ `Tempterature: ${ weatherData.main.temp }\xB0 ${ tempUnits }` }</p>
+            <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
+            <p id="weather">{ weatherData.weather[0].description }</p>
+            <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
         </article>
     )
 }

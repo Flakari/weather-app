@@ -1,7 +1,3 @@
-body {
-    background-color: #9797ff;
-}
-
 h1 {
     text-align: center;
     font-variant: small-caps;
@@ -11,7 +7,8 @@ h1 {
     width: 1200px;
     max-width: 95%;
     margin: 0 auto;
-    background-color: #ffffff9c;
+    background-color: #e3ecff;
+    border-radius: 5px;
 }
 
 #weather-form {
@@ -75,4 +72,8 @@ h1 {
 #search-info p {
     margin: 0;
     text-align: center;
+}
+
+#weather {
+    text-transform: capitalize;
 }
