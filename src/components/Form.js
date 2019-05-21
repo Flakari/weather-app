@@ -46,6 +46,7 @@ function Form({ updateData, updateForecast, units, updateUnits }) {
                     value={ city }
                     onChange={ changeHandler }
                 />
+                <br />
                 <input id="submit" type="submit" value="Submit" />
             </form>
             <input id="fahr" name="imperial" type="button" value ="F&deg;" onClick={ updateUnits }/>

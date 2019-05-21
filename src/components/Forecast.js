@@ -10,11 +10,13 @@ function Forecast({ forecastData, tempUnits }) {
     function formatForecast() {
         let dataObj = formatForecastData();
         let dataArray = [];
-        
+
         // Formats forecast data into array for map
         Object.keys(dataObj).forEach((key) => {
             dataArray.push([key, dataObj[Number(key)]]);
         });
+
+        console.log(dataArray);
 
         return dataArray.map((data) => {
             return (
@@ -35,28 +37,47 @@ function Forecast({ forecastData, tempUnits }) {
         if (forecastData.list) {
             data = forecastData.list.map(item => {
                 const date = new Date(item.dt * 1000);
-                return [date.getDate(), Math.floor(item.main.temp), item.weather[0].main];
+                return [date.getDate(), Math.floor(item.main.temp), item.weather[0].main, item.weather[0].id];
             });
-            console.log(data);
         }
 
-        let todaysDate = new Date().getDate();
-        console.log(todaysDate);
+        let time = new Date()
+        let todaysDate = time.getDate();
+        let currentHour = time.getHours();
+
+        console.log(currentHour);
 
         /* Finds highest temperature and weather associated for each day that's not
            the current date */
         for (let i = 0; i < data.length; i++) {
-            if (data[i][0] != todaysDate) {
-                if (!formatObj.hasOwnProperty(data[i][0])) {
-                    formatObj[data[i][0]] = [data[i][1], data[i][2]];
-                } else {
-                    if (data[i][1] > formatObj[data[i][0]][0]) {
-                        formatObj[data[i][0]] = [data[i][1], data[i][2]];
+            const date = data[i][0];
+            const temp = data[i][1];
+            const weather = data[i][2];
+            const id = data[i][3];
+            
+            // 5 day forecast advances at 6 pm
+            if (currentHour >= 18) {
+                if (date != todaysDate) {
+                    if (!formatObj.hasOwnProperty(date)) {
+                        formatObj[date] = [temp, weather];
+                    } else {
+                        if (temp > formatObj[date][0]) {
+                            formatObj[date] = [temp, weather, id];
+                        }
+                    }
+                }
+            } else {
+                if (date != todaysDate + 5) {
+                    if (!formatObj.hasOwnProperty(date)) {
+                        formatObj[date] = [temp, weather];
+                    } else {
+                        if (temp > formatObj[date][0]) {
+                            formatObj[date] = [temp, weather, id];
+                        }
                     }
                 }
             }
         }
-        console.log(formatObj);
         return formatObj;
     }
 
