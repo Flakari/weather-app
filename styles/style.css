@@ -77,3 +77,14 @@ h1 {
 #weather {
     text-transform: capitalize;
 }
+
+#forecast {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.forecast-day {
+    background-color: #ffffffee;
+    width: 19%;
+    text-align: center;
+}
