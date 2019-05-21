@@ -43,7 +43,7 @@ function Weather() {
                 units={ units }
                 updateUnits={ updateUnits } 
             />
-            { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } /> : null }
+            { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } forecastData={ forecastData }/> : null }
         </div>
     )
 }

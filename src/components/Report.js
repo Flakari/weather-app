@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Forecast from './Forecast';
 
-function Report( { weatherData, units }) {
+function Report( { weatherData, units, forecastData }) {
     const [ windUnits, setWindUnits ] = useState('');
     const [ windSpeed, setWindSpeed ] = useState('');
     const [ tempUnits, setTempUnits ] = useState('');
@@ -60,14 +61,17 @@ function Report( { weatherData, units }) {
     }
 
     return (
-        <article>
-            <p>Weather Report</p>
-            <p>{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
-            <p id="temp">{ `Tempterature: ${ weatherData.main.temp }\xB0 ${ tempUnits }` }</p>
-            <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
-            <p id="weather">{ weatherData.weather[0].description }</p>
-            <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
-        </article>
+        <div>
+            <article>
+                <p>Weather Report</p>
+                <p>{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
+                <p id="temp">{ `Tempterature: ${ weatherData.main.temp }\xB0 ${ tempUnits }` }</p>
+                <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
+                <p id="weather">{ weatherData.weather[0].description }</p>
+                <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
+            </article>
+            <Forecast forecastData={ forecastData } tempUnits={ tempUnits }/>
+        </div>
     )
 }
 
