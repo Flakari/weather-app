@@ -5,6 +5,7 @@ function Report( { weatherData, units, forecastData }) {
     const [ windUnits, setWindUnits ] = useState('');
     const [ windSpeed, setWindSpeed ] = useState('');
     const [ tempUnits, setTempUnits ] = useState('');
+    const [ weatherIcon, setWeatherIcon ] = useState('');
 
     useEffect(() => {
         setWindUnits(units == 'imperial' ? 'mph' : 'km/h');
@@ -20,8 +21,31 @@ function Report( { weatherData, units, forecastData }) {
         return (speed * M_TO_KM * SEC_TO_HR).toFixed(2);
     }
 
-    function weatherIcon(weather) {
-        // Inserts icon based on weather conditions and possible time of day
+    function getWeatherIcon(weather, id, placement = '') {
+        const time = new Date().getHours();
+        // Get sunrise and sunset values for clear
+        // Also get cloudy icon for night as well
+        if (weather == 'Clear') {
+            if (time >= 18 && time < 6 && placement == 'report') {
+                return 'moon';
+            } else {
+                return 'sun';
+            }
+        } else if (weather == 'Clouds') {
+            if (id == 801 || id == 802) {
+                return 'cloudy';
+            } else {
+                return 'cloud';
+            }
+        } else if (weather == 'Rain' || weather == 'Drizzle') {
+            return 'rain';
+        } else if (weather == 'Thunderstorm' || id == 781) {
+            return 'storm';
+        } else if (weather == 'Snow') {
+            return 'snowflake';
+        } else {
+            return 'cloud';
+        }
     }
 
     function getWindDirection(deg) {
@@ -66,11 +90,12 @@ function Report( { weatherData, units, forecastData }) {
                 <p>Weather Report</p>
                 <p>{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
                 <p id="temp">{ `Tempterature: ${ weatherData.main.temp }\xB0 ${ tempUnits }` }</p>
+                <img id="report-icon" src={ `./src/icons/${getWeatherIcon(weatherData.weather[0].main, weatherData.weather[0].id, 'report')}.svg` }></img>
                 <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
                 <p id="weather">{ weatherData.weather[0].description }</p>
                 <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
             </article>
-            <Forecast forecastData={ forecastData } tempUnits={ tempUnits }/>
+            <Forecast forecastData={ forecastData } tempUnits={ tempUnits } getIcon={ getWeatherIcon }/>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Forecast({ forecastData, tempUnits }) {
+function Forecast({ forecastData, tempUnits, getIcon }) {
     const [ formattedForecast, updateFormattedForecast ] = useState([]);
 
     useEffect(() => {
@@ -22,6 +22,7 @@ function Forecast({ forecastData, tempUnits }) {
             return (
                 <article key={ data[0] } className="forecast-day">
                     <h3>{data[0]}</h3>
+                    <img className="forecast-icon" src={`./src/icons/${getIcon(data[1][1], data[1][2])}.svg`}></img>
                     <p>{data[1][0]}</p>
                     <p>{data[1][1]}</p>
                 </article>
@@ -47,8 +48,7 @@ function Forecast({ forecastData, tempUnits }) {
 
         console.log(currentHour);
 
-        /* Finds highest temperature and weather associated for each day that's not
-           the current date */
+        // Finds highest temperature and weather associated for each day in forecast
         for (let i = 0; i < data.length; i++) {
             const date = data[i][0];
             const temp = data[i][1];

@@ -105,3 +105,12 @@ div {
     width: 19%;
     text-align: center;
 }
+
+.forecast-icon {
+    width: 60px;
+    max-width: 45%;
+}
+
+#report-icon {
+    width: 100px;
+}
