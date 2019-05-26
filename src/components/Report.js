@@ -11,6 +11,7 @@ function Report( { weatherData, units, forecastData }) {
         setWindUnits(units == 'imperial' ? 'mph' : 'km/h');
         setWindSpeed(units == 'imperial' ? weatherData.wind.speed : metricWindSpeed(weatherData.wind.speed));
         setTempUnits(units == 'imperial' ? 'F' : 'C');
+        setWeatherIcon(getWeatherIcon(weatherData.weather[0].main, weatherData.weather[0].id, 'report'));
         console.log('units updated');
     }, [ weatherData ]);
 
@@ -88,9 +89,9 @@ function Report( { weatherData, units, forecastData }) {
         <div>
             <article>
                 <p>Weather Report</p>
-                <p>{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
+                <p id="city">{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
                 <p id="temp">{ `Tempterature: ${ weatherData.main.temp }\xB0 ${ tempUnits }` }</p>
-                <img id="report-icon" src={ `./src/icons/${getWeatherIcon(weatherData.weather[0].main, weatherData.weather[0].id, 'report')}.svg` }></img>
+                <img id="report-icon" src={ `./src/icons/${ weatherIcon }.svg` }></img>
                 <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
                 <p id="weather">{ weatherData.weather[0].description }</p>
                 <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>

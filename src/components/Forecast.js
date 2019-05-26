@@ -22,9 +22,10 @@ function Forecast({ forecastData, tempUnits, getIcon }) {
             return (
                 <article key={ data[0] } className="forecast-day">
                     <h3>{data[0]}</h3>
-                    <img className="forecast-icon" src={`./src/icons/${getIcon(data[1][1], data[1][2])}.svg`}></img>
-                    <p>{data[1][0]}</p>
-                    <p>{data[1][1]}</p>
+                    <img className="forecast-icon" src={`./src/icons/${getIcon(data[1].weather, data[1].id)}.svg`}></img>
+                    <p>{data[1].weather}</p>
+                    <p>{data[1].highTemp}</p>
+                    <p>{data[1].lowTemp}</p>
                 </article>
             )
         });
@@ -59,20 +60,32 @@ function Forecast({ forecastData, tempUnits, getIcon }) {
             if (currentHour >= 18) {
                 if (date != todaysDate) {
                     if (!formatObj.hasOwnProperty(date)) {
-                        formatObj[date] = [temp, weather];
+                        formatObj[date] = {highTemp: temp, lowTemp: temp, weather: weather, id: id};
                     } else {
-                        if (temp > formatObj[date][0]) {
-                            formatObj[date] = [temp, weather, id];
+                        if (temp > formatObj[date].highTemp) {
+                            formatObj[date].highTemp = temp;
+                            formatObj[date].weather = weather;
+                            formatObj[date].id = id;
+                        }
+
+                        if (temp < formatObj[date].lowTemp) {
+                            formatObj[date].lowTemp = temp;
                         }
                     }
                 }
             } else {
                 if (date != todaysDate + 5) {
                     if (!formatObj.hasOwnProperty(date)) {
-                        formatObj[date] = [temp, weather];
+                        formatObj[date] = {highTemp: temp, lowTemp: temp, weather: weather, id: id};
                     } else {
-                        if (temp > formatObj[date][0]) {
-                            formatObj[date] = [temp, weather, id];
+                        if (temp > formatObj[date].highTemp) {
+                            formatObj[date].highTemp = temp;
+                            formatObj[date].weather = weather;
+                            formatObj[date].id = id;
+                        }
+
+                        if (temp < formatObj[date].lowTemp) {
+                            formatObj[date].lowTemp = temp;
                         }
                     }
                 }
