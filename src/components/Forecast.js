@@ -57,6 +57,7 @@ function Forecast({ forecastData, tempUnits, getIcon }) {
             const id = data[i][3];
             
             // 5 day forecast advances at 6 pm
+            // API gets rid of current day before 6 pm, may not need time condition
             if (currentHour >= 18) {
                 if (date != todaysDate) {
                     if (!formatObj.hasOwnProperty(date)) {

@@ -6,14 +6,23 @@ function Report( { weatherData, units, forecastData }) {
     const [ windSpeed, setWindSpeed ] = useState('');
     const [ tempUnits, setTempUnits ] = useState('');
     const [ weatherIcon, setWeatherIcon ] = useState('');
+    const [ time, setTime ] = useState(0);
+    const [ sunrise, setSunrise] = useState(0);
+    const [ sunset, setSunset ] = useState(0);
 
     useEffect(() => {
         setWindUnits(units == 'imperial' ? 'mph' : 'km/h');
         setWindSpeed(units == 'imperial' ? weatherData.wind.speed : metricWindSpeed(weatherData.wind.speed));
         setTempUnits(units == 'imperial' ? 'F' : 'C');
-        setWeatherIcon(getWeatherIcon(weatherData.weather[0].main, weatherData.weather[0].id, 'report'));
-        console.log('units updated');
+        
+        setTime(getTimeValues(new Date()));
+        setSunrise(getTimeValues(new Date(weatherData.sys.sunrise * 1000)));
+        setSunset(getTimeValues(new Date(weatherData.sys.sunset * 1000)));
     }, [ weatherData ]);
+
+    useEffect(() => {
+        setWeatherIcon(getWeatherIcon(weatherData.weather[0].main, weatherData.weather[0].id, 'report'));
+    });
 
     function metricWindSpeed(speed) {
         const M_TO_KM = 1 / 1000;
@@ -23,11 +32,13 @@ function Report( { weatherData, units, forecastData }) {
     }
 
     function getWeatherIcon(weather, id, placement = '') {
-        const time = new Date().getHours();
+        function timeConditional() {
+            return (((time < sunrise) || (time > sunset)) && placement == 'report');
+        }
         // Get sunrise and sunset values for clear
         // Also get cloudy icon for night as well
         if (weather == 'Clear') {
-            if (time >= 18 && time < 6 && placement == 'report') {
+            if (timeConditional()) {
                 return 'moon';
             } else {
                 return 'sun';
@@ -47,6 +58,24 @@ function Report( { weatherData, units, forecastData }) {
         } else {
             return 'cloud';
         }
+    }
+
+    function getTimeValues(time) {
+        const hour = time.getUTCHours();
+        const minutes = time.getUTCMinutes();
+        const timezone = weatherData.timezone / 3600;
+        let hourPlusTimezone = hour + timezone;
+
+        if (hourPlusTimezone >= 24) {
+            hourPlusTimezone -= 24;
+        }
+
+        if (hourPlusTimezone < 0) {
+            hourPlusTimezone += 24;
+        }
+
+        console.log(hourPlusTimezone + (minutes / 60));
+        return hourPlusTimezone + (minutes / 60);
     }
 
     function getWindDirection(deg) {
@@ -95,6 +124,9 @@ function Report( { weatherData, units, forecastData }) {
                 <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
                 <p id="weather">{ weatherData.weather[0].description }</p>
                 <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
+                <p>{ `Time: ${Math.floor(time)}:${Math.round((time % 1) * 60)}` }</p>
+                <p>{ `Sunrise: ${Math.floor(sunrise)}:${Math.round((sunrise % 1) * 60)}` }</p>
+                <p>{ `Sunset: ${Math.floor(sunset)}:${Math.round((sunset % 1) * 60)}` }</p>
             </article>
             <Forecast forecastData={ forecastData } tempUnits={ tempUnits } getIcon={ getWeatherIcon }/>
         </div>
