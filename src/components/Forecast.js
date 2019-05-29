@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Forecast({ forecastData, tempUnits, getIcon }) {
+function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone }) {
     const [ formattedForecast, updateFormattedForecast ] = useState([]);
 
     useEffect(() => {
@@ -8,91 +8,82 @@ function Forecast({ forecastData, tempUnits, getIcon }) {
     }, [ forecastData ]);
 
     function formatForecast() {
-        let dataObj = formatForecastData();
-        let dataArray = [];
-
-        // Formats forecast data into array for map
-        Object.keys(dataObj).forEach((key) => {
-            dataArray.push([key, dataObj[Number(key)]]);
-        });
-
-        console.log(dataArray);
-
-        return dataArray.map((data) => {
+        let data = formatForecastData();
+        
+        return data.map((item) => {
             return (
-                <article key={ data[0] } className="forecast-day">
-                    <h3>{data[0]}</h3>
-                    <img className="forecast-icon" src={`./src/icons/${getIcon(data[1].weather, data[1].id)}.svg`}></img>
-                    <p>{data[1].weather}</p>
-                    <p>{data[1].highTemp}</p>
-                    <p>{data[1].lowTemp}</p>
+                <article key={ item.date } className="forecast-day">
+                    <h3>{item.date}</h3>
+                    <img className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}></img>
+                    <p>{item.weather}</p>
+                    <p>{item.highTemp}</p>
+                    <p>{item.lowTemp}</p>
                 </article>
             )
         });
     }
 
     function formatForecastData() {
-        let formatObj = {};
-        let data = [];
+        let data = findForecastDayRange();
+        let filteredData = [];
         
-        // Singles out day, temp, and weather for that day
-        if (forecastData.list) {
-            data = forecastData.list.map(item => {
-                const date = new Date(item.dt * 1000);
-                return [date.getDate(), Math.floor(item.main.temp), item.weather[0].main, item.weather[0].id];
-            });
-        }
-
-        let time = new Date()
-        let todaysDate = time.getDate();
-        let currentHour = time.getHours();
-
-        console.log(currentHour);
-
         // Finds highest temperature and weather associated for each day in forecast
         for (let i = 0; i < data.length; i++) {
             const date = data[i][0];
             const temp = data[i][1];
             const weather = data[i][2];
             const id = data[i][3];
+            const lastIndex = filteredData.length - 1;
             
-            // 5 day forecast advances at 6 pm
-            // API gets rid of current day before 6 pm, may not need time condition
-            if (currentHour >= 18) {
-                if (date != todaysDate) {
-                    if (!formatObj.hasOwnProperty(date)) {
-                        formatObj[date] = {highTemp: temp, lowTemp: temp, weather: weather, id: id};
-                    } else {
-                        if (temp > formatObj[date].highTemp) {
-                            formatObj[date].highTemp = temp;
-                            formatObj[date].weather = weather;
-                            formatObj[date].id = id;
-                        }
-
-                        if (temp < formatObj[date].lowTemp) {
-                            formatObj[date].lowTemp = temp;
-                        }
-                    }
-                }
+            if (filteredData.length == 0 || filteredData[lastIndex].date != date) {
+                filteredData.push({date: date, highTemp: temp, lowTemp: temp, weather: weather, id: id});
             } else {
-                if (date != todaysDate + 5) {
-                    if (!formatObj.hasOwnProperty(date)) {
-                        formatObj[date] = {highTemp: temp, lowTemp: temp, weather: weather, id: id};
-                    } else {
-                        if (temp > formatObj[date].highTemp) {
-                            formatObj[date].highTemp = temp;
-                            formatObj[date].weather = weather;
-                            formatObj[date].id = id;
-                        }
+                if (temp > filteredData[lastIndex].highTemp) {
+                    filteredData[lastIndex].highTemp = temp;
+                    filteredData[lastIndex].weather = weather;
+                    filteredData[lastIndex].id = id;
+                }
 
-                        if (temp < formatObj[date].lowTemp) {
-                            formatObj[date].lowTemp = temp;
-                        }
-                    }
+                if (temp < filteredData[lastIndex].lowTemp) {
+                    filteredData[lastIndex].lowTemp = temp;
                 }
             }
         }
-        return formatObj;
+
+        return filteredData;
+    }
+
+    function findForecastDayRange() {
+        let data = [];
+        const daySet = new Set;
+        const time = getTime(new Date(+ new Date() + (timezone * 1000)), 'forecast');
+        const todaysDate = time.date;
+        const currentHour = time.hour;
+        
+        if (forecastData.list) {
+            data = forecastData.list.map(item => {
+                const date = getTime(new Date((item.dt * 1000) + (timezone * 1000)), 'forecast');
+                return [date.date, Math.floor(item.main.temp), item.weather[0].main, item.weather[0].id];
+            });
+        }
+
+        data.forEach(item => {
+            daySet.add(item[0]);
+        });
+
+        let rangeArray = [...daySet];
+
+        if (currentHour >= 18 && rangeArray[0] == todaysDate) {
+            rangeArray.shift();
+        } else if (rangeArray.length > 5) {
+            rangeArray.pop();
+        }
+
+        data = data.filter(item => {
+            return rangeArray.includes(item[0]);
+        });
+
+        return data;
     }
 
     return (
