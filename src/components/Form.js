@@ -38,7 +38,7 @@ function Form({ updateData, updateForecast, units, updateUnits }) {
     }
 
     return (
-        <div>
+        <div id="form-container">
             <form id="weather-form" onSubmit={ (e) => { e.preventDefault(); retrieveWeatherData(city, units); }}>
                 <input 
                     name="Location"

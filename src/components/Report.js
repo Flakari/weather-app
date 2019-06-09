@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Forecast from './Forecast';
 
-function Report( { weatherData, units, forecastData }) {
+function Report( { weatherData, units, forecastData, windowSetup }) {
     const [ windUnits, setWindUnits ] = useState('');
     const [ windSpeed, setWindSpeed ] = useState('');
     const [ tempUnits, setTempUnits ] = useState('');
@@ -16,13 +16,25 @@ function Report( { weatherData, units, forecastData }) {
         setTempUnits(units == 'imperial' ? 'F' : 'C');
         
         setTime(getTimeValues( new Date(+ new Date() + (weatherData.timezone * 1000)) ));
-        setSunrise(getTimeValues( new Date((weatherData.sys.sunrise * 1000) + (weatherData.timezone * 1000)) ));
-        setSunset(getTimeValues( new Date((weatherData.sys.sunset * 1000) + (weatherData.timezone * 1000)) ));
+        
+        if (weatherData.sys.sunrise == 0 && weatherData.sys.sunset == 0) {
+            setSunrise('-');
+            setSunset('-');
+        } else {
+            setSunrise(getTimeValues( new Date((weatherData.sys.sunrise * 1000) + (weatherData.timezone * 1000)) ));
+            setSunset(getTimeValues( new Date((weatherData.sys.sunset * 1000) + (weatherData.timezone * 1000)) ));
+        }
     }, [ weatherData ]);
 
     useEffect(() => {
         setWeatherIcon(getWeatherIcon(weatherData.weather[0].main, weatherData.weather[0].id, 'report'));
     });
+
+    useEffect(() => {
+        const report = document.getElementById('report-container');
+
+        windowSetup == 'wide' ? report.classList.add('report-wide') : report.classList.remove('report-wide');
+    }, [ windowSetup ]);
 
     function metricWindSpeed(speed) {
         const M_TO_KM = 1 / 1000;
@@ -63,12 +75,25 @@ function Report( { weatherData, units, forecastData }) {
         const hour = time.getUTCHours();
         const minutes = time.getUTCMinutes();
         const date = time.getUTCDate();
+        const day = getDayOrMonth(time.getUTCDay(), 'day');
+        const month = getDayOrMonth(time.getUTCMonth(), 'month');
 
         if (hour >= 24) { hour -= 24; }
         if (hour < 0) { hour += 24; }
         //console.log('UTC Date: ' + date);
         //console.log('UTC Time: ' + (hour + (minutes / 60)));
-        return placement == '' ? hour + (minutes / 60) : {hour: hour, date: date};
+        return placement == '' ? hour + (minutes / 60) : {hour: hour, date: date, day: day, month: month};
+    }
+
+    function getDayOrMonth(value, type) {
+        const daysArray = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        if (type == 'day') {
+            return daysArray[value];
+        } else {
+            return monthsArray[value];
+        }
     }
 
     function getWindDirection(deg) {
@@ -108,25 +133,27 @@ function Report( { weatherData, units, forecastData }) {
     }
 
     return (
-        <div>
-            <article>
-                <p>Weather Report</p>
+        <div id="report-container">
+            <section id="report">
                 <p id="city">{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
-                <p id="temp">{ `Tempterature: ${ weatherData.main.temp }\xB0 ${ tempUnits }` }</p>
-                <img id="report-icon" src={ `./src/icons/${ weatherIcon }.svg` }></img>
-                <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
                 <p id="weather">{ weatherData.weather[0].description }</p>
+                
+                <img id="report-icon" src={ `./src/icons/${ weatherIcon }.svg` }></img>
+                <p id="temp">{`${ weatherData.main.temp }\xB0`}<span>{tempUnits}</span></p>
+                <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
+                
                 <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
                 <p>{ `Time: ${Math.floor(time)}:${Math.round((time % 1) * 60)}` }</p>
-                <p>{ `Sunrise: ${Math.floor(sunrise)}:${Math.round((sunrise % 1) * 60)}` }</p>
-                <p>{ `Sunset: ${Math.floor(sunset)}:${Math.round((sunset % 1) * 60)}` }</p>
-            </article>
+                <p>{ isNaN(sunrise) ? `Sunrise: -` : `Sunrise: ${Math.floor(sunrise)}:${Math.round((sunrise % 1) * 60)}` }</p>
+                <p>{ isNaN(sunset) ? `Sunset: -` : `Sunset: ${Math.floor(sunset)}:${Math.round((sunset % 1) * 60)}` }</p>
+            </section>
             <Forecast 
                 forecastData={ forecastData } 
                 tempUnits={ tempUnits } 
                 getIcon={ getWeatherIcon } 
                 getTime={ getTimeValues }
                 timezone={ weatherData.timezone }
+                windowSetup={ windowSetup }
             />
         </div>
     )

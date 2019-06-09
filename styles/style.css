@@ -2,9 +2,35 @@ body {
     margin: 0;
 }
 
+header {
+    padding: 12px 5%;
+    background-color: #272a31;
+    box-shadow: #868686 0px 5px 8px -4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-icon {
+    height: 32px;
+    width: 32px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#header-icon img {
+    height: 100%;
+    width: 100%;
+}
+
 h1 {
     text-align: center;
     font-variant: small-caps;
+    margin: 0;
+    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #e2e2e2;
 }
 
 div {
@@ -71,14 +97,14 @@ div {
 #error {
     padding: 5px;
     overflow: hidden;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 0.9em;
     color: #520100;
     text-align: center;
 }
 
 #search-info {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 0.9em;
     box-sizing: border-box;
     background-color: #ffffb2;
@@ -91,19 +117,46 @@ div {
     text-align: center;
 }
 
-#weather {
-    text-transform: capitalize;
+#report {
+    text-align: center;
+    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-#forecast {
-    display: flex;
-    justify-content: space-evenly;
+.report-wide {
+    display: grid;
+    grid-template-columns: 1fr 45%;
+    align-items: center;
+}
+
+#city {
+    font-size: 2.5rem;
+    margin-bottom: 6px;
+    text-transform: uppercase; 
+}
+
+#weather {
+    text-transform: capitalize;
+    font-size: 1.5rem;
+    margin-top: 6px;
+}
+
+#report-icon {
+    width: 150px;
+    max-width: 30%;
+}
+
+#temp {
+    font-size: 2rem;
+}
+
+#temp span {
+    font-size: 1.6rem;
 }
 
 .forecast-day {
     background-color: #ffffffee;
-    width: 19%;
     text-align: center;
+    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .forecast-icon {
@@ -111,6 +164,35 @@ div {
     max-width: 45%;
 }
 
-#report-icon {
-    width: 100px;
+@media only screen and (max-width: 750px) {
+    #form-container {
+        display: none;
+    }
+
+    #forecast {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .forecast-day {
+        display: block;
+        background-color: #ffffffee;
+        width: 20%;
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: 750px) {
+    .forecast-day {
+        display: grid;
+        grid-template-columns: 40% repeat(4, 1fr);
+        height: 100px;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .forecast-icon {
+        width: 60px;
+        max-width: 60%;
+    }
 }
