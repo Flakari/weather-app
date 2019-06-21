@@ -32,16 +32,20 @@ function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone, windowS
         
         return data.map((item) => {
             return (
-                <article key={ item.date } className="forecast-day">
-                    <h3>{ `${ item.day }, ${ item.month } ${ item.date }` }</h3>
-                    <img 
-                        className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
-                        alt={item.weather}
-                    ></img>
-                    <p>{item.weather}</p>
-                    <p>{ `High: ${item.highTemp}` }</p>
-                    <p>{ `Low: ${item.lowTemp}` }</p>
-                </article>
+                <div key={ item.date }>
+                    <div className="forecast-title">
+                        <h3>{ `${ item.day }, ${ item.month } ${ item.date }` }</h3>
+                    </div>
+                    <article className="forecast-day">
+                        <p>{item.weather}</p>
+                        <img 
+                            className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
+                            alt={item.weather}
+                        ></img>
+                        <p>{ `High: ${item.highTemp}` }</p>
+                        <p>{ `Low: ${item.lowTemp}` }</p>
+                    </article>
+                </div>
             )
         });
     }

@@ -80,8 +80,7 @@ function Report( { weatherData, units, forecastData, windowSetup }) {
 
         if (hour >= 24) { hour -= 24; }
         if (hour < 0) { hour += 24; }
-        //console.log('UTC Date: ' + date);
-        //console.log('UTC Time: ' + (hour + (minutes / 60)));
+
         return placement == '' ? hour + (minutes / 60) : {hour: hour, date: date, day: day, month: month};
     }
 
@@ -132,6 +131,25 @@ function Report( { weatherData, units, forecastData, windowSetup }) {
         }
     }
 
+    function formatTime(time) {
+        let hour = Math.floor(time);
+        let minutes = Math.floor((time % 1) * 60);
+        let beforeNoon = true;
+
+        if (hour > 12) {
+            hour = hour - 12;
+            beforeNoon = false;
+        }
+
+        if (minutes < 10) {
+            minutes = `0${minutes}`;
+        }
+
+        let formattedTime = `${hour}:${minutes}`;
+
+        return beforeNoon == true ? `${formattedTime} AM` : `${formattedTime} PM`;
+    }
+
     return (
         <div id="report-container">
             <section id="report">
@@ -143,9 +161,9 @@ function Report( { weatherData, units, forecastData, windowSetup }) {
                 <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
                 
                 <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
-                <p>{ `Time: ${Math.floor(time)}:${Math.round((time % 1) * 60)}` }</p>
-                <p>{ isNaN(sunrise) ? `Sunrise: -` : `Sunrise: ${Math.floor(sunrise)}:${Math.round((sunrise % 1) * 60)}` }</p>
-                <p>{ isNaN(sunset) ? `Sunset: -` : `Sunset: ${Math.floor(sunset)}:${Math.round((sunset % 1) * 60)}` }</p>
+                <p>{ `Time: ${formatTime(time)}` }</p>
+                <p>{ isNaN(sunrise) ? 'Sunrise: -' : `Sunrise: ${formatTime(sunrise)}` }</p>
+                <p>{ isNaN(sunset) ? 'Sunset: -' : `Sunset: ${formatTime(sunset)}` }</p>
             </section>
             <Forecast 
                 forecastData={ forecastData } 

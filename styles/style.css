@@ -1,3 +1,7 @@
+* {
+    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 body {
     margin: 0;
 }
@@ -29,8 +33,7 @@ h1 {
     text-align: center;
     font-variant: small-caps;
     margin: 0;
-    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: #e2e2e2;
+    color: #e8e8e8;
 }
 
 div {
@@ -38,16 +41,21 @@ div {
 }
 
 #container {
-    width: 1200px;
-    max-width: 100%;
+    width: 1000px;
+    max-width: 90%;
     margin: 0 auto;
     background-color: #e3ecff;
     border-radius: 5px;
 }
 
+#form-container {
+    margin-top: 20px;
+}
+
 #weather-form {
     display: grid;
     grid-template-columns: 1fr;
+    row-gap: 10px;
     margin: 0 auto;
     width: 1000px;
     max-width: 100%;
@@ -65,20 +73,22 @@ div {
     font-size: 1.5em;
 }
 
-#fahr {
-    height: 35px;
-    width: 35px;
-}
-
-#cel {
-    height: 35px;
-    width: 35px;
+#units-container {
+    text-align: center;
+    margin-top: 5px;
 }
 
 #submit {
     margin: 0 auto;
-    height: 35px;
-    width: 80px;
+    font-size: 1rem;
+    height: 40px;
+    width: 300px;
+}
+
+#fahr,#cel {
+    height: 40px;
+    width: 60px;
+    font-size: 1rem;
 }
 
 #error-container {
@@ -97,14 +107,12 @@ div {
 #error {
     padding: 5px;
     overflow: hidden;
-    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 0.9em;
     color: #520100;
     text-align: center;
 }
 
 #search-info {
-    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 0.9em;
     box-sizing: border-box;
     background-color: #ffffb2;
@@ -119,7 +127,6 @@ div {
 
 #report {
     text-align: center;
-    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .report-wide {
@@ -153,18 +160,28 @@ div {
     font-size: 1.6rem;
 }
 
+.forecast-title {
+    background-color: gray;
+    padding: 8px;
+}
+
+.forecast-title > h3 {
+    color: #eeeeee;
+    font-size: 1rem;
+    margin: 0;
+}
+
 .forecast-day {
     background-color: #ffffffee;
     text-align: center;
-    font-family: 'Karla', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .forecast-icon {
-    width: 60px;
+    width: 55px;
     max-width: 45%;
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 650px) {
     #form-container {
         display: none;
     }
@@ -182,11 +199,11 @@ div {
     }
 }
 
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 651px) {
     .forecast-day {
         display: grid;
-        grid-template-columns: 40% repeat(4, 1fr);
-        height: 100px;
+        grid-template-columns: 30% repeat(3, 1fr);
+        height: 75px;
         align-items: center;
         justify-items: center;
     }
@@ -194,5 +211,15 @@ div {
     .forecast-icon {
         width: 60px;
         max-width: 60%;
+    }
+
+    #header-icon {
+        visibility: hidden;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    #container {
+        max-width: 100%;
     }
 }

@@ -43,6 +43,7 @@ function Weather({ windowSetup }) {
                 units={ units }
                 updateUnits={ updateUnits }
                 windowSetup={ windowSetup }
+                weatherData={ weatherData }
             />
             { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } forecastData={ forecastData } windowSetup={ windowSetup }/> : null }
         </div>
