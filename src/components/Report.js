@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Forecast from './Forecast';
 
-function Report( { weatherData, units, forecastData, windowSetup }) {
+function Report({ weatherData, units, forecastData, windowSetup }) {
     const [ windUnits, setWindUnits ] = useState('');
     const [ windSpeed, setWindSpeed ] = useState('');
     const [ tempUnits, setTempUnits ] = useState('');

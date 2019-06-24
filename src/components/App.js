@@ -22,13 +22,17 @@ function App() {
     }, [ windowWidth ]);
 
     function formVisibility() {
-        
+        setFormVisible(!formVisible);
     }
+
+    useEffect(() => {
+        console.log(formVisible);
+    }, [formVisible])
 
     return (
         <main id="container">
-            <Header windowSetup={ windowSetup } formVisibility={ formVisibility }/>
-            <Weather windowSetup={ windowSetup } formVisibility={ formVisibility }/>
+            <Header windowSetup={ windowSetup } formVisibility={ formVisibility } formVisible={ formVisible }/>
+            <Weather windowSetup={ windowSetup } formVisibility={ formVisibility } formVisible={ formVisible }/>
             <p>{ windowWidth }</p>
             <p>{ windowSetup }</p>
         </main>

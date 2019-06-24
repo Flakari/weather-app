@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Header() {
+function Header({ windowSetup, formVisibility }) {
     return (
         <header>
-            <button id="header-icon"><img src="./src/icons/hamburger2.svg"></img></button>
+            <button id="header-icon" onClick={ formVisibility }><img src="./src/icons/hamburger2.svg"></img></button>
             <h1>Weather!</h1>
-            <div style={{height: `37px`, width: `32px`, visibility: 'hidden'}}></div>
+            <div style={{height: `60px`, width: `60px`, visibility: 'hidden'}}></div>
         </header>
     )
 }

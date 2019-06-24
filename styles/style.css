@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    padding: 12px 5%;
+    height: 60px;
     background-color: #272a31;
     box-shadow: #868686 0px 5px 8px -4px;
     display: flex;
@@ -16,12 +16,13 @@ header {
 }
 
 #header-icon {
-    height: 32px;
-    width: 32px;
+    height: 60px;
+    width: 60px;
     padding: 0;
     background: none;
     border: none;
     cursor: pointer;
+    padding: 14px;
 }
 
 #header-icon img {
@@ -49,7 +50,11 @@ div {
 }
 
 #form-container {
-    margin-top: 20px;
+    background-color: #afbbd6;
+    box-shadow: inset #868686 0px 5px 8px -4px;
+    padding-top: 20px;
+    left: 0px;
+    transition: left 0.5s ease-out;
 }
 
 #weather-form {
@@ -126,6 +131,7 @@ div {
 }
 
 #report {
+    padding-top: 20px;
     text-align: center;
 }
 
@@ -137,6 +143,7 @@ div {
 
 #city {
     font-size: 2.5rem;
+    margin-top: 0;
     margin-bottom: 6px;
     text-transform: uppercase; 
 }
@@ -181,9 +188,14 @@ div {
     max-width: 45%;
 }
 
+#form-container.hidden {
+    left: -650px;
+    transition: left 0.5s ease-out;
+}
+
 @media only screen and (max-width: 650px) {
     #form-container {
-        display: none;
+        position: absolute;
     }
 
     #forecast {

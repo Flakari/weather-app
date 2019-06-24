@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-function Form({ updateData, updateForecast, units, updateUnits, weatherData }) {
+function Form({ 
+    updateData, updateForecast, units, updateUnits, windowSetup, weatherData, formVisible, formVisibility }) {
     const [ city, setCity ] = useState('');
     const [ history, setHistory ] = useState([]);
     const [ formattedHistory, setFormattedHistory ] = useState([]);
@@ -11,7 +12,9 @@ function Form({ updateData, updateForecast, units, updateUnits, weatherData }) {
 
     useEffect(() => {
         if (weatherData.hasOwnProperty('cod')) {
-            historyChangeHandler();
+            if (weatherData.cod == 200) {
+                historyChangeHandler();
+            }
         }
     }, [ weatherData ])
 
@@ -65,8 +68,11 @@ function Form({ updateData, updateForecast, units, updateUnits, weatherData }) {
     }
 
     return (
-        <div id="form-container">
-            <form id="weather-form" onSubmit={ (e) => { e.preventDefault(); retrieveWeatherData(city, units); }}>
+        <div 
+            id="form-container" 
+            className={(windowSetup == 'narrow' && formVisible == false) ? 'hidden' : undefined}
+        >
+            <form id="weather-form" onSubmit={ (e) => { e.preventDefault(); retrieveWeatherData(city, units); formVisibility()}}>
                 <input 
                     name="Location"
                     id="weather-input"

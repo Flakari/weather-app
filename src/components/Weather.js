@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Form from './Form';
 import Report from './Report';
 
-function Weather({ windowSetup }) {
+function Weather({ windowSetup, formVisibility, formVisible }) {
     const [ weatherData, setWeatherData ] = useState({});
     const [ forecastData, setForecastData ] = useState({});
     const [ units, setUnits ] = useState('imperial');
@@ -44,6 +44,8 @@ function Weather({ windowSetup }) {
                 updateUnits={ updateUnits }
                 windowSetup={ windowSetup }
                 weatherData={ weatherData }
+                formVisibility={ formVisibility }
+                formVisible={ formVisible }
             />
             { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } forecastData={ forecastData } windowSetup={ windowSetup }/> : null }
         </div>
