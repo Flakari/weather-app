@@ -16,10 +16,28 @@ function Form({
                 historyChangeHandler();
             }
         }
-    }, [ weatherData ])
+    }, [ weatherData ]);
+
+    useEffect(() => {
+        formatHistory();
+    }, [ history[0] ]);
 
     function formatHistory() {
-        // Format history into list of clickable buttons
+        setFormattedHistory(history.map(item => {
+            return (
+                <li 
+                    key={item} 
+                    className="history"
+                    onClick={historyClickHandler}
+                >
+                    <button>{item}</button>
+                </li>
+            )
+        }));
+    }
+
+    function historyClickHandler(e) {
+        retrieveWeatherData(e.target.innerText, units);
     }
 
     function historyChangeHandler() {
@@ -86,7 +104,7 @@ function Form({
                 <input id="cel" name="metric" type="button" value ="C&deg;" onClick={ updateUnits } />
             </div>
             <div id="past-input-container">
-                <p>{history.join(' ')}</p>
+                <ul>{ formattedHistory }</ul>
             </div>
         </div>
     )

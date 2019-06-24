@@ -130,6 +130,11 @@ div {
     text-align: center;
 }
 
+.history {
+    list-style-type: none;
+    display: inline-block;
+}
+
 #report {
     padding-top: 20px;
     text-align: center;
