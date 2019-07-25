@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Footer from './Footer';
 
 function Form({ 
     updateData, updateForecast, units, updateUnits, windowSetup, weatherData, formVisible, formVisibility }) {
@@ -28,16 +29,15 @@ function Form({
                 <li 
                     key={item} 
                     className="history"
-                    onClick={historyClickHandler}
                 >
-                    <button>{item}</button>
+                    <button onClick={historyClickHandler}>{item}</button>
                 </li>
             )
         }));
     }
 
-    function historyClickHandler(e) {
-        retrieveWeatherData(e.target.innerText, units);
+    function historyClickHandler(event) {
+        setCity(event.target.innerText);
     }
 
     function historyChangeHandler() {
@@ -106,6 +106,7 @@ function Form({
             <div id="past-input-container">
                 <ul>{ formattedHistory }</ul>
             </div>
+            { windowSetup === 'narrow' ? <Footer /> : null }
         </div>
     )
 }

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone, windowSetup }) {
     const [ narrowForecast, setNarrowForecast ] = useState([]);
+    const [ middleForecast, setMiddleForecst ] = useState([]);
     const [ wideForecast, setWideForecast ] = useState([]);
 
     useEffect(() => {
         setNarrowForecast(formatNarrowForecast());
+        setMiddleForecst(formatMiddleForecast());
         setWideForecast(formatWideForecast());
     }, [ forecastData ]);
 
@@ -22,6 +24,25 @@ function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone, windowS
                     ></img>
                     <p>{item.highTemp}</p>
                     <p>{item.lowTemp}</p>
+                </article>
+            )
+        });
+    }
+
+    function formatMiddleForecast() {
+        let data = formatForecastData();
+        
+        return data.map((item) => {
+            return (
+                <article key={ item.date } className="forecast-day">
+                    <h3>{ `${ item.day }` }<br/>{ `${ item.month } ${ item.date }` }</h3>
+                    <p>{item.weather}</p>
+                    <img 
+                        className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
+                        alt={item.weather}
+                    ></img>
+                    <p>{ `High: ${item.highTemp}` }</p>
+                    <p>{ `Low: ${item.lowTemp}` }</p>
                 </article>
             )
         });
@@ -51,17 +72,12 @@ function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone, windowS
     }
 
     function formatForecastData() {
-        let data = findForecastDayRange();
+        let forecastDataRange = findForecastDayRange();
         let filteredData = [];
         
         // Finds highest temperature and weather associated for each day in forecast
-        for (let i = 0; i < data.length; i++) {
-            const date = data[i][0];
-            const temp = data[i][1];
-            const weather = data[i][2];
-            const id = data[i][3];
-            const month = data[i][4];
-            const day = data[i][5];
+        for (let forecastTime of forecastDataRange) {
+            const [date, temp, weather, id, month, day] = forecastTime;
             const lastIndex = filteredData.length - 1;
             
             if (filteredData.length == 0 || filteredData[lastIndex].date != date) {
@@ -117,7 +133,7 @@ function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone, windowS
 
     return (
         <section id="forecast">
-            { windowSetup == 'narrow' ? narrowForecast : wideForecast }
+            { windowSetup == 'narrow' ? narrowForecast : windowSetup == 'middle' ? middleForecast : wideForecast }
         </section>
     )
 }

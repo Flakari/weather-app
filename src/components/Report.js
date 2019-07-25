@@ -157,13 +157,17 @@ function Report({ weatherData, units, forecastData, windowSetup }) {
                 <p id="weather">{ weatherData.weather[0].description }</p>
                 
                 <img id="report-icon" src={ `./src/icons/${ weatherIcon }.svg` }></img>
-                <p id="temp">{`${ weatherData.main.temp }\xB0`}<span>{tempUnits}</span></p>
-                <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
-                
-                <p id="wind">{ `Wind Speed: ${ windSpeed }${ windUnits } ${ getWindDirection(weatherData.wind.deg) }`}</p>
-                <p>{ `Time: ${formatTime(time)}` }</p>
-                <p>{ isNaN(sunrise) ? 'Sunrise: -' : `Sunrise: ${formatTime(sunrise)}` }</p>
-                <p>{ isNaN(sunset) ? 'Sunset: -' : `Sunset: ${formatTime(sunset)}` }</p>
+                <p id="temp">{`${ weatherData.main.temp.toFixed(1) }\xB0`}<span>{tempUnits}</span></p>
+                <div id="secondary-report-container">
+                    <section>
+                        <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
+                        <p id="wind">{ `Wind Speed: ${ windSpeed }`}<span>{windUnits}</span>{` ${ getWindDirection(weatherData.wind.deg) }`}</p>
+                    </section>
+                    <section>
+                        <p>{ isNaN(sunrise) ? 'Sunrise: -' : `Sunrise: ${formatTime(sunrise)}` }</p>
+                        <p>{ isNaN(sunset) ? 'Sunset: -' : `Sunset: ${formatTime(sunset)}` }</p>
+                    </section>
+                </div>
             </section>
             <Forecast 
                 forecastData={ forecastData } 

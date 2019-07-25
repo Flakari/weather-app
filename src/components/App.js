@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Weather from './Weather';
+import Footer from './Footer';
 
 function App() {
     const [ windowWidth, setWindowWidth ] = useState(window.innerWidth);
@@ -25,16 +26,11 @@ function App() {
         setFormVisible(!formVisible);
     }
 
-    useEffect(() => {
-        console.log(formVisible);
-    }, [formVisible])
-
     return (
         <main id="container">
             <Header windowSetup={ windowSetup } formVisibility={ formVisibility } formVisible={ formVisible }/>
             <Weather windowSetup={ windowSetup } formVisibility={ formVisibility } formVisible={ formVisible }/>
-            <p>{ windowWidth }</p>
-            <p>{ windowSetup }</p>
+            { windowSetup !== 'narrow' ? <Footer /> : null }
         </main>
     )
 }
