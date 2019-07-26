@@ -1,74 +1,52 @@
 import React, { useState, useEffect } from 'react';
 
-function Forecast({ forecastData, tempUnits, getIcon, getTime, timezone, windowSetup }) {
+function Forecast({ forecastData, getIcon, getTime, timezone, windowSetup }) {
     const [ narrowForecast, setNarrowForecast ] = useState([]);
     const [ middleForecast, setMiddleForecst ] = useState([]);
     const [ wideForecast, setWideForecast ] = useState([]);
 
     useEffect(() => {
-        setNarrowForecast(formatNarrowForecast());
-        setMiddleForecst(formatMiddleForecast());
-        setWideForecast(formatWideForecast());
+        setNarrowForecast(formatForecastDisplay('narrow'));
+        setMiddleForecst(formatForecastDisplay('middle'));
+        setWideForecast(formatForecastDisplay('wide'));
     }, [ forecastData ]);
 
-    function formatNarrowForecast() {
-        let data = formatForecastData();
-        
-        return data.map((item) => {
-            return (
-                <article key={ item.date } className="forecast-day">
-                    <h3>{item.date}</h3>
-                    <img 
-                        className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
-                        alt={item.weather}
-                    ></img>
-                    <p>{item.highTemp}</p>
-                    <p>{item.lowTemp}</p>
-                </article>
-            )
-        });
-    }
-
-    function formatMiddleForecast() {
-        let data = formatForecastData();
-        
-        return data.map((item) => {
-            return (
-                <article key={ item.date } className="forecast-day">
-                    <h3>{ `${ item.day }` }<br/>{ `${ item.month } ${ item.date }` }</h3>
-                    <p>{item.weather}</p>
-                    <img 
-                        className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
-                        alt={item.weather}
-                    ></img>
-                    <p>{ `High: ${item.highTemp}` }</p>
-                    <p>{ `Low: ${item.lowTemp}` }</p>
-                </article>
-            )
-        });
-    }
-
-    function formatWideForecast() {
-        let data = formatForecastData();
-        
-        return data.map((item) => {
-            return (
-                <div key={ item.date }>
-                    <div className="forecast-title">
-                        <h3>{ `${ item.day }, ${ item.month } ${ item.date }` }</h3>
-                    </div>
-                    <article className="forecast-day">
-                        <p>{item.weather}</p>
+    function formatForecastDisplay(setup) {
+        if (setup === 'narrow' || setup === 'middle') {
+            return formatForecastData().map(item => {
+                return (
+                    <article key={ item.date } className="forecast-day">
+                        { setup === 'narrow' ? <h3>{ item.date }</h3> : <h3>{ `${ item.day }` }<br/>{ `${ item.month } ${ item.date }` }</h3> }
+                        { setup === 'middle' ? <p>{item.weather}</p> : null }
                         <img 
                             className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
                             alt={item.weather}
                         ></img>
-                        <p>{ `High: ${item.highTemp}` }</p>
-                        <p>{ `Low: ${item.lowTemp}` }</p>
+                        <p>{ setup === 'narrow' ? item.highTemp : `High: ${item.highTemp}` }</p>
+                        <p>{ setup === 'narrow' ? item.lowTemp : `Low: ${ item.lowTemp }` }</p>
                     </article>
-                </div>
-            )
-        });
+                )
+            });
+        } else if (setup === 'wide') {
+            return formatForecastData().map(item => {
+                return (
+                    <div key={ item.date }>
+                        <div className="forecast-title">
+                            <h3>{ `${ item.day }, ${ item.month } ${ item.date }` }</h3>
+                        </div>
+                        <article className="forecast-day">
+                            <p>{item.weather}</p>
+                            <img 
+                                className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
+                                alt={item.weather}
+                            ></img>
+                            <p>{ `High: ${item.highTemp}` }</p>
+                            <p>{ `Low: ${item.lowTemp}` }</p>
+                        </article>
+                    </div>
+                )
+            });
+        }
     }
 
     function formatForecastData() {
