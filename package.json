@@ -1,7 +1,9 @@
 {
   "name": "weather-app",
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>src/setupTests.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>src/setupTests.js"
+    ]
   },
   "version": "1.0.0",
   "description": "Weather Application",

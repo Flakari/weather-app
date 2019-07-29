@@ -85,7 +85,7 @@ div {
 
 #units-container {
     text-align: center;
-    margin-top: 5px;
+    margin: 5px 0 10px 0;
 }
 
 #submit {
@@ -118,21 +118,24 @@ div {
     padding: 5px;
     overflow: hidden;
     font-size: 0.9em;
-    color: #520100;
+    color: #080000;
     text-align: center;
 }
 
 #search-info {
-    font-size: 0.9em;
     box-sizing: border-box;
     background-color: #ffffb2;
     padding: 10px;
-    color: #3a3700;
 }
 
 #search-info p {
-    margin: 0;
+    margin: 0 auto;
+    display: block;
+    max-width: 575px;
+    font-size: 0.8em;
+    font-weight: bold;
     text-align: center;
+    color: #5a5600;
 }
 
 .history {

@@ -19,10 +19,10 @@ function Forecast({ forecastData, getIcon, getTime, timezone, windowSetup }) {
                         { setup === 'narrow' ? <h3>{ item.date }</h3> : <h3>{ `${ item.day }` }<br/>{ `${ item.month } ${ item.date }` }</h3> }
                         { setup === 'middle' ? <p>{item.weather}</p> : null }
                         <img 
-                            className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
-                            alt={item.weather}
+                            className="forecast-icon" src={`./src/icons/${ getIcon(item.weather, item.id) }.svg`}
+                            alt={ item.weather }
                         ></img>
-                        <p>{ setup === 'narrow' ? item.highTemp : `High: ${item.highTemp}` }</p>
+                        <p>{ setup === 'narrow' ? item.highTemp : `High: ${ item.highTemp }` }</p>
                         <p>{ setup === 'narrow' ? item.lowTemp : `Low: ${ item.lowTemp }` }</p>
                     </article>
                 )
@@ -35,13 +35,13 @@ function Forecast({ forecastData, getIcon, getTime, timezone, windowSetup }) {
                             <h3>{ `${ item.day }, ${ item.month } ${ item.date }` }</h3>
                         </div>
                         <article className="forecast-day">
-                            <p>{item.weather}</p>
+                            <p>{ item.weather }</p>
                             <img 
-                                className="forecast-icon" src={`./src/icons/${getIcon(item.weather, item.id)}.svg`}
-                                alt={item.weather}
+                                className="forecast-icon" src={`./src/icons/${ getIcon(item.weather, item.id) }.svg`}
+                                alt={ item.weather }
                             ></img>
-                            <p>{ `High: ${item.highTemp}` }</p>
-                            <p>{ `Low: ${item.lowTemp}` }</p>
+                            <p>{ `High: ${ item.highTemp }` }</p>
+                            <p>{ `Low: ${ item.lowTemp }` }</p>
                         </article>
                     </div>
                 )
