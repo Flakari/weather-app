@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 function History({ setCity, weatherData }) {
-    const [ history, setHistory ] = useState([]);
+    const [ history, setHistory ] = useState(window.localStorage && window.localStorage.getItem('history') ? JSON.parse(window.localStorage.getItem('history')) : []);
     const [ formattedHistory, setFormattedHistory ] = useState([]);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ function History({ setCity, weatherData }) {
                     key={item} 
                     className="history"
                 >
-                    <button onClick={ historyClickHandler }>{item}</button>
+                    <button onClick={ historyClickHandler }>{ item }</button>
                 </li>
             )
         }));
@@ -45,7 +45,13 @@ function History({ setCity, weatherData }) {
 
         if (newHistory.length > 5) { newHistory.pop(); }
 
-        setHistory(newHistory);
+        if (window.localStorage) {
+            const localStorage = window.localStorage;
+            localStorage.setItem('history', JSON.stringify(newHistory));
+            setHistory(JSON.parse(localStorage.getItem('history')));
+        } else {
+            setHistory(newHistory);
+        }
     }
 
     return (
