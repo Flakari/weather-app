@@ -101,7 +101,11 @@ div {
     font-size: 1rem;
     margin: 0 3px;
     border: 1px solid #898989;
-    background: linear-gradient(180deg, rgb(245, 245, 245) 0%, #dedede 100%);
+    background: linear-gradient(180deg, #f5f5f5 0%, #dedede 100%);
+}
+
+#fahr:active,#cel:active {
+    background: linear-gradient(180deg, #dedede 0%, #f5f5f5 100%);
 }
 
 #fahr {

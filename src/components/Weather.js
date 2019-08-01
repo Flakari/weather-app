@@ -19,16 +19,6 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
         setUnits(event.target.name);
     }
 
-    useEffect(() => {
-        if (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) {
-            console.log('Success');
-        } else {
-            console.log('Error');
-        }
-        console.log(weatherData);
-        console.log(forecastData);
-    }, [ forecastData ]);
-
     return (
         <div>
             <Form 
