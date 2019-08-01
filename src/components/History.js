@@ -43,7 +43,7 @@ function History({ setCity, weatherData }) {
 
         newHistory.unshift(city);
 
-        if (newHistory.length > 5) { newHistory.pop(); }
+        if (newHistory.length > 3) { newHistory.pop(); }
 
         if (window.localStorage) {
             const localStorage = window.localStorage;

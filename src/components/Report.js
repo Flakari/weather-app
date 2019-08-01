@@ -56,7 +56,11 @@ function Report({ weatherData, units, forecastData, windowSetup }) {
             }
         } else if (weather == 'Clouds') {
             if (id == 801 || id == 802) {
-                return 'cloudy';
+                if (timeConditional()) {
+                    return 'cloudynight';
+                } else {
+                    return 'cloudy';
+                }
             } else {
                 return 'cloud';
             }

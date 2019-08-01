@@ -26,11 +26,15 @@ function Form({
 
         const [ report, forecast ] = await weatherPromise;
         
-        if (report.cod === 200) { formVisibility(); }
-
-        updateData(report);
-        updateForecast(forecast);
         errorMessageDisplay(report);
+
+        if (report.cod === 200) {
+            formVisibility();
+            updateData(report);
+            updateForecast(forecast);
+        } else {
+            return;
+        }
 
         function getKey() {
             return window.atob('MTExODcxNTRkYTcyZTNlNGY1MDUzOWEzNWRkYzgxNDQ=');
