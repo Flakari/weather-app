@@ -12,8 +12,8 @@ function Form({
 
     async function retrieveWeatherData(input, units) {
         const location = encodeURI(input);
-        const URL = `http://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
-        const fiveDayURL = `http://api.openweathermap.org/data/2.5/forecast?q=${ location }&units=${ units }&APPID=`;
+        const URL = `https://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
+        const fiveDayURL = `https://api.openweathermap.org/data/2.5/forecast?q=${ location }&units=${ units }&APPID=`;
 
         const weatherPromise = Promise.all([
             fetch(`${ URL }${ getKey() }`, { mode: 'cors' }),
