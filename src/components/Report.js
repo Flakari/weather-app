@@ -160,7 +160,7 @@ function Report({ weatherData, units, forecastData, windowSetup }) {
                 <p id="city">{ `${ weatherData.name}, ${ weatherData.sys.country }` }</p>
                 <p id="weather">{ weatherData.weather[0].description }</p>
                 
-                <img id="report-icon" src={ `./src/icons/${ weatherIcon }.svg` }></img>
+                <img id="report-icon" src={ `icons/${ weatherIcon }.svg` }></img>
                 <p id="temp">{`${ weatherData.main.temp.toFixed(1) }\xB0`}<span>{tempUnits}</span></p>
                 <div id="secondary-report-container">
                     <section>

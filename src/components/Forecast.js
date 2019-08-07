@@ -19,7 +19,7 @@ function Forecast({ forecastData, getIcon, getTime, timezone, windowSetup }) {
                         { setup === 'narrow' ? <h3>{ item.date }</h3> : <h3>{ `${ item.day }` }<br/>{ `${ item.month } ${ item.date }` }</h3> }
                         { setup === 'middle' ? <p>{item.weather}</p> : null }
                         <img 
-                            className="forecast-icon" src={`./src/icons/${ getIcon(item.weather, item.id) }.svg`}
+                            className="forecast-icon" src={`icons/${ getIcon(item.weather, item.id) }.svg`}
                             alt={ item.weather }
                         ></img>
                         <p>{ setup === 'narrow' ? item.highTemp : `High: ${ item.highTemp }` }</p>
@@ -37,7 +37,7 @@ function Forecast({ forecastData, getIcon, getTime, timezone, windowSetup }) {
                         <article className="forecast-day">
                             <p>{ item.weather }</p>
                             <img 
-                                className="forecast-icon" src={`./src/icons/${ getIcon(item.weather, item.id) }.svg`}
+                                className="forecast-icon" src={`icons/${ getIcon(item.weather, item.id) }.svg`}
                                 alt={ item.weather }
                             ></img>
                             <p>{ `High: ${ item.highTemp }` }</p>
