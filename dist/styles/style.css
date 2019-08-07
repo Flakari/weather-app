@@ -81,6 +81,7 @@ div {
 }
 
 #weather-input {
+    background: white;
     border: 2px solid rgb(103, 145, 235);
     border-radius: 5px;
     margin: 0 auto;
