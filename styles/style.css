@@ -221,7 +221,8 @@ div {
 }
 
 #secondary-report-container {
-    width: 80%;
+    max-width: 90%;
+    width: 400px;
     margin: 10px auto;
     font-size: 1.1rem;
     display: grid;
@@ -327,6 +328,10 @@ footer a {
         height: 75px;
         align-items: center;
         justify-items: center;
+    }
+
+    #secondary-report-container {
+        max-width: 70%;
     }
 
     #weather-form {

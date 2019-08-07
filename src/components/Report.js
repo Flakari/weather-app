@@ -165,7 +165,7 @@ function Report({ weatherData, units, forecastData, windowSetup }) {
                 <div id="secondary-report-container">
                     <section>
                         <p id="humidity">{ `Humidity: ${ weatherData.main.humidity }%` }</p>
-                        <p id="wind">{ `Wind Speed: ${ windSpeed }`}<span>{windUnits}</span>{` ${ getWindDirection(weatherData.wind.deg) }`}</p>
+                        <p id="wind">{ `Wind Speed: `}<br />{ `${ windSpeed }` }<span>{windUnits}</span>{` ${ getWindDirection(weatherData.wind.deg) }`}</p>
                     </section>
                     <section>
                         <p>{ isNaN(sunrise) ? 'Sunrise: -' : `Sunrise: ${formatTime(sunrise)}` }</p>
