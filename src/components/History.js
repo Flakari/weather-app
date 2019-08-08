@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function History({ setCity, weatherData }) {
+function History({ updateCity, weatherData }) {
     const [ history, setHistory ] = useState(window.localStorage && window.localStorage.getItem('history') ? JSON.parse(window.localStorage.getItem('history')) : []);
     const [ formattedHistory, setFormattedHistory ] = useState([]);
 
@@ -23,14 +23,14 @@ function History({ setCity, weatherData }) {
                     key={item} 
                     className="history"
                 >
-                    <button onClick={ historyClickHandler }>{ item }</button>
+                    <button title={ item } onClick={ historyClickHandler }>{ item }</button>
                 </li>
             )
         }));
     }
 
     function historyClickHandler(event) {
-        setCity(event.target.innerText);
+        updateCity(event.target.innerText);
     }
 
     function historyChangeHandler() {

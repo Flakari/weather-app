@@ -4,8 +4,14 @@ import Report from './Report';
 
 function Weather({ windowSetup, formVisibility, formVisible }) {
     const [ weatherData, setWeatherData ] = useState({});
-    const [ forecastData, setForecastData ] = useState({});
-    const [ units, setUnits ] = useState('imperial');
+    const [ forecastData, setForecastData ] = useState(
+        window.localStorage && window.localStorage.getItem('history') ? {} : {}
+    );
+    const [ units, setUnits ] = useState(
+        window.localStorage && window.localStorage.getItem('units') ? 
+        JSON.parse(window.localStorage.getItem('units')) : 'imperial'
+    );
+    const [ city, setCity ] = useState('');
 
     function updateWeatherData(data) {
         setWeatherData(data);
@@ -16,20 +22,79 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
     }
 
     function updateUnits(event) {
-        setUnits(event.target.name);
+        if (window.localStorage) {
+            const localStorage = window.localStorage;
+            localStorage.setItem('units', JSON.stringify(event.target.name));
+            setUnits(JSON.parse(localStorage.getItem('units')));
+        } else {
+            setUnits(event.target.name);
+        }
+    }
+
+    function updateCity(event) {
+        setCity(event);
+    }
+
+    async function retrieveWeatherData(input, units) {
+        const location = encodeURI(input);
+        const URL = `https://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
+        const fiveDayURL = `https://api.openweathermap.org/data/2.5/forecast?q=${ location }&units=${ units }&APPID=`;
+
+        const weatherPromise = Promise.all([
+            fetch(`${ URL }${ getKey() }`, { mode: 'cors' }),
+            fetch(`${ fiveDayURL }${ getKey() }`, { mode: 'cors' })
+        ])
+        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+        .catch(error => {
+            console.error(error);
+        });
+
+        const [ report, forecast ] = await weatherPromise;
+        
+        errorMessageDisplay(report);
+
+        if (report.cod === 200) {
+            formVisibility();
+            updateWeatherData(report);
+            updateForecastData(forecast);
+        } else {
+            return;
+        }
+
+        function getKey() {
+            return window.atob('MTExODcxNTRkYTcyZTNlNGY1MDUzOWEzNWRkYzgxNDQ=');
+        }
+    }
+
+    function errorMessageDisplay(response) {
+        const errorCont = document.getElementById('error-container');
+        const error = document.getElementById('error');
+    
+        if (response.cod != 200) {
+            errorCont.classList.add('error-unhidden');
+            error.textContent = `Error: ${ capitalize(response.message) }`;
+        } else {
+            errorCont.classList.remove('error-unhidden');
+            error.textContent = '';
+        }
+    }
+
+    function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     return (
         <div>
             <Form 
-                updateData={ updateWeatherData }
-                updateForecast={ updateForecastData }
                 units={ units }
                 updateUnits={ updateUnits }
                 windowSetup={ windowSetup }
                 weatherData={ weatherData }
                 formVisibility={ formVisibility }
                 formVisible={ formVisible }
+                retrieveWeatherData={ retrieveWeatherData }
+                city={ city }
+                updateCity={ updateCity }
             />
             { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } forecastData={ forecastData } windowSetup={ windowSetup }/> : null }
         </div>
