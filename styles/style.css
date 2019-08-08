@@ -199,12 +199,11 @@ div {
 #weather {
     text-transform: capitalize;
     font-size: 2rem;
-    margin: 6px 0;
+    margin: 6px 0 15px 0;
 }
 
 #report-icon {
     width: 150px;
-    max-width: 30%;
 }
 
 #temp {
