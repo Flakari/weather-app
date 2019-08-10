@@ -4,14 +4,20 @@ import Report from './Report';
 
 function Weather({ windowSetup, formVisibility, formVisible }) {
     const [ weatherData, setWeatherData ] = useState({});
-    const [ forecastData, setForecastData ] = useState(
-        window.localStorage && window.localStorage.getItem('history') ? {} : {}
-    );
+    const [ forecastData, setForecastData ] = useState({});
     const [ units, setUnits ] = useState(
         window.localStorage && window.localStorage.getItem('units') ? 
         JSON.parse(window.localStorage.getItem('units')) : 'imperial'
     );
     const [ city, setCity ] = useState('');
+
+    useEffect(() => {
+        if (!weatherData.hasOwnProperty('cod') && window.localStorage && window.localStorage.getItem('history') && window.localStorage.getItem('units')) {
+            retrieveWeatherData(JSON.parse(window.localStorage.getItem('history'))[0], JSON.parse(window.localStorage.getItem('units')));
+        } else {
+            return;
+        }   
+    }, []);
 
     function updateWeatherData(data) {
         setWeatherData(data);
@@ -31,8 +37,8 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
         }
     }
 
-    function updateCity(event) {
-        setCity(event);
+    function updateCity(newCity) {
+        setCity(newCity);
     }
 
     async function retrieveWeatherData(input, units) {
@@ -40,7 +46,7 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
         const URL = `https://api.openweathermap.org/data/2.5/weather?q=${ location }&units=${ units }&APPID=`;
         const fiveDayURL = `https://api.openweathermap.org/data/2.5/forecast?q=${ location }&units=${ units }&APPID=`;
 
-        const weatherPromise = Promise.all([
+        const weatherPromise = await Promise.all([
             fetch(`${ URL }${ getKey() }`, { mode: 'cors' }),
             fetch(`${ fiveDayURL }${ getKey() }`, { mode: 'cors' })
         ])
@@ -57,6 +63,11 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
             formVisibility();
             updateWeatherData(report);
             updateForecastData(forecast);
+            if (window.localStorage) {
+                const localStorage = window.localStorage;
+                localStorage.setItem('units', JSON.stringify(units));
+                setUnits(JSON.parse(localStorage.getItem('units')));
+            }
         } else {
             return;
         }
