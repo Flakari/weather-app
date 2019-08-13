@@ -277,6 +277,7 @@ footer a {
         position: absolute;
         padding: 20px 0 0 0;
         top: 60px;
+        visibility: hidden;
     }
 
     #search-info p {
@@ -297,6 +298,10 @@ footer a {
 
     #container {
         max-width: 100%;
+    }
+
+    footer {
+        visibility: hidden;
     }
 }
 

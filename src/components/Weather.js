@@ -10,6 +10,7 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
         JSON.parse(window.localStorage.getItem('units')) : 'imperial'
     );
     const [ city, setCity ] = useState('');
+    const [ hidden, setHidden ] = useState(window.localStorage && window.localStorage.getItem('history') ? true : false);
 
     useEffect(() => {
         if (!weatherData.hasOwnProperty('cod') && window.localStorage && window.localStorage.getItem('history') && window.localStorage.getItem('units')) {
@@ -68,6 +69,13 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
                 localStorage.setItem('units', JSON.stringify(units));
                 setUnits(JSON.parse(localStorage.getItem('units')));
             }
+            if (hidden) {
+                setTimeout(() => {
+                    document.getElementById('form-container').style.visibility = 'visible';
+                    document.getElementsByTagName('footer')[0].style.visibility = 'visible';
+                    setHidden(false);
+                }, 400);
+            }
         } else {
             return;
         }
@@ -94,6 +102,13 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    useEffect(() => {
+        if (!hidden) {
+            document.getElementById('form-container').style.visibility = 'visible';
+            document.getElementsByTagName('footer')[0].style.visibility = 'visible';
+        }
+    }, [ windowSetup ]);
+
     return (
         <div>
             <Form 
@@ -107,7 +122,7 @@ function Weather({ windowSetup, formVisibility, formVisible }) {
                 city={ city }
                 updateCity={ updateCity }
             />
-            { (weatherData.hasOwnProperty('cod') && weatherData.cod == 200) ? <Report weatherData={ weatherData } units={ units } forecastData={ forecastData } windowSetup={ windowSetup }/> : null }
+            { (weatherData.hasOwnProperty('cod') && weatherData.cod === 200) ? <Report weatherData={ weatherData } units={ units } forecastData={ forecastData } windowSetup={ windowSetup }/> : null }
         </div>
     )
 }
