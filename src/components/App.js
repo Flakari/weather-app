@@ -4,13 +4,15 @@ import Weather from './Weather';
 import Footer from './Footer';
 
 function App() {
-    const [ windowWidth, setWindowWidth ] = useState(window.innerWidth);
-    const [ windowSetup, setWindowSetup ] = useState('');
-    const [ formVisible, setFormVisible ] = useState(true);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [windowSetup, setWindowSetup] = useState('');
+    const [formVisible, setFormVisible] = useState(true);
 
-    window.addEventListener('resize', () => {
-        setWindowWidth(window.innerWidth);
-    });
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            setWindowWidth(window.innerWidth);
+        });
+    }, []);
 
     useEffect(() => {
         if (windowWidth <= 650) {
@@ -20,7 +22,7 @@ function App() {
         } else {
             setWindowSetup('wide');
         }
-    }, [ windowWidth ]);
+    }, [windowWidth]);
 
     function formVisibility() {
         setFormVisible(!formVisible);
@@ -28,9 +30,9 @@ function App() {
 
     return (
         <main id="container">
-            <Header windowSetup={ windowSetup } formVisibility={ formVisibility } formVisible={ formVisible }/>
-            <Weather windowSetup={ windowSetup } formVisibility={ formVisibility } formVisible={ formVisible }/>
-            { windowSetup !== 'narrow' ? <Footer /> : null }
+            <Header windowSetup={windowSetup} formVisibility={formVisibility} formVisible={formVisible} />
+            <Weather windowSetup={windowSetup} formVisibility={formVisibility} formVisible={formVisible} />
+            {windowSetup !== 'narrow' ? <Footer /> : null}
         </main>
     )
 }
